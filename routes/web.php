@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Marketing\MarketingController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::middleware('auth')->group(function () {
@@ -17,18 +18,17 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 //marketing route
-Route::middleware('auth', 'MarketingMiddleware')->group(function(){
-    Route::get('/dashboard', [MarketingController::class, 'index'])->name('marketing.dashboard');
-
-
-});
 
 // admin route
 Route::middleware('auth', 'AdminMiddleware')->group(function(){
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
 
 });
+
+Route::get('/portfolio', [MessageController::class, 'index'])->name('portfolio.index');
+Route::get('/message', [MessageController::class, 'message'])->name('portfolio.message');
+Route::post('/portfolio/store', [MessageController::class, 'store'])->name('portfolio.store');
 
 
 
